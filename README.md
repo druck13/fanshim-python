@@ -13,13 +13,19 @@
 
 # Installing
 
-Stable library from PyPi:
+Stable Pimorini version library from PyPi:
 
 * Just run `sudo pip install fanshim`
 
-Latest/development library from GitHub:
+Latest/development library from THE PIMORINI GitHub:
 
 * `git clone https://github.com/pimoroni/fanshim-python`
+* `cd fanshim-python`
+* `sudo ./install.sh`
+
+### Latest/development library from HERE with PWM to run fan slower:
+
+* `git clone https://github.com/grayerbeard/fanshim-python.git`
 * `cd fanshim-python`
 * `sudo ./install.sh`
 
