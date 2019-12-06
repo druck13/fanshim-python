@@ -1,7 +1,7 @@
 # My attempts to modify to run Fan only as fast as needed
 
 ## December 6th 1200hrs
-(1) Modified __init__.py so that when command given ti run fan it should run at 70% speed instead of 100%.   Extensive test have shown that the cooling effect is very similar at a slower speed and yet the fan is much quieter.  Next will try installing and see what happens.
+(1) Modified __init__.py so that when command given to run fan it should run at 70% speed instead of 100%.   Extensive test have shown that the cooling effect is very similar at a slower speed and yet the fan is much quieter.  Then added a tmux_start.py command that can be usd to run in a tmux session. Next will try installing and see what happens.
 
 
 # Fan Shim for Raspberry Pi
@@ -23,13 +23,20 @@ Latest/development library from THE PIMORINI GitHub:
 * `cd fanshim-python`
 * `sudo ./install.sh`
 
-### Latest/development library from HERE with PWM to run fan slower:
+### My "Slower Speed Development" library from HERE using PWM to run fan slower:
 
+#### Install and run my version of automatic.py in a tmux session 
+* `mkdir /home/pi/fanshim_pwm`
+* `cd /home/pi/fanshim_pwm`
 * `git clone https://github.com/grayerbeard/fanshim-python.git`
-* `cd fanshim-python`
 * `sudo ./install.sh`
+* `./tmux_start.sh`
+### Notes
+* If not installed install tmux with `sudo apt-get install tmux`
+* To start automatically put this into rc.local using `sudo nano /etc/rc.local` : `sudo -u pi bash /home/pi/fanshim_pwm/tmux_start.sh &`
 
-# Reference
+
+# Reference for using commands in your own Python Program
 
 You should first set up an instance of the `FANShim` class, eg:
 
