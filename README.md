@@ -1,7 +1,10 @@
 # My attempts to modify to run Fan only as fast as needed
 
+It does not make much difference how fast the fan is running as long as its putting enough colder air by the cpu it gets cooled about the same. (tests done using the  algorithm_test_cooling.py algoritmm in the pwm_fanshim branch of my [RPi4_Python_FanshimPWM_Temperature_Control_with_logging](https://github.com/grayerbeard/RPi4_Python_FanshimPWM_Temperature_Control_with_logging/tree/pwm_fanshim) repository. 70 to 75% speed is well fast enough and is much quieter.
+
 ## December 6th 1200hrs
 (1) Modified __init__.py so that when command given to run fan it should run at 70% speed instead of 100%.   Extensive test have shown that the cooling effect is very similar at a slower speed and yet the fan is much quieter.  Then added a tmux_start.py command that can be usd to run in a tmux session. Next will try installing and see what happens.
+## Note none tested yet!! December 6th 1300hrs
 
 
 # Fan Shim for Raspberry Pi
@@ -33,7 +36,11 @@ Latest/development library from THE PIMORINI GitHub:
 * `./tmux_start.sh`
 ### Notes
 * If not installed install tmux with `sudo apt-get install tmux`
-* To start automatically put this into rc.local using `sudo nano /etc/rc.local` : `sudo -u pi bash /home/pi/fanshim_pwm/tmux_start.sh &`
+* To start automatically put this into `rc.local` using `sudo nano /etc/rc.local` : `sudo -u pi bash /home/pi/fanshim_pwm/tmux_start.sh &`
+* To change parameters used edit `tmux_start.sh`.
+* To check if tmux session running OK use `tmux ls`
+* To observe program output use `tmux a -t fanshim_pwm`
+* To leave tmux seession use `ctrl-b` `d`
 
 
 # Reference for using commands in your own Python Program
