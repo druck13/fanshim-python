@@ -1,6 +1,6 @@
 # My attempts to modify to run Fan only as fast as needed
 
-December 6th 1200hrs
+## December 6th 1200hrs
 (1) Modified __init__.py so that when command given ti run fan it should run at 70% speed instead of 100%.   Extensive test have shown that the cooling effect is very similar at a slower speed and yet the fan is much quieter.  Next will try installing and see what happens.
 
 
