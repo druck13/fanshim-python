@@ -36,7 +36,7 @@ Latest/development library from THE PIMORINI GitHub:
 * `./tmux_start.sh`
 ### Notes
 * If not installed install tmux with `sudo apt-get install tmux`
-* To start automatically put this into `rc.local` using `sudo nano /etc/rc.local` : `sudo -u pi bash /home/pi/fanshim-pwm/tmux_start.sh &`
+* To start automatically put this into `rc.local` using `sudo nano /etc/rc.local` : `sudo -u pi bash /home/pi/fanshim-python/tmux_start.sh &`
 * To change parameters used edit `tmux_start.sh`.
 * To check if tmux session running OK use `tmux ls`
 * To observe program output use `tmux a -t fanshim_pwm`
