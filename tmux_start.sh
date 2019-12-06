@@ -1,6 +1,7 @@
 #!/bin/bash
-cd /home/pi/fanshim_pwm/examples
-echo looking to kill any old tmux fanshim session
+cd /home/pi/fanshim-python/examples
+echo looking to kill any old tmux auto session
 tmux kill-session -t auto
-echo now new tmux fanshim session 
-tmux new-session -d -s auto 'python3 automatic.py --verbose --delay 10 --off-threshold 60 --on-threshold 65 --noled False --brightness 80'
+echo now new tmux autoauto session 
+tmux new-session -d -s auto 'python3 automatic.py --verbose --delay 10 --off-threshold 60 --on-threshold 65 --brightness 80
+'

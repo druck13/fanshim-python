@@ -23,6 +23,7 @@ class FanShim():
         self._button_hold_handler = None
         self._button_hold_time = 2.0
         self._t_poll = None
+        print("hullo sss")
         
         
         # My added parameters
@@ -42,11 +43,11 @@ class FanShim():
         #My Version
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
-		GPIO.setup(self._pin_fancontrol, GPIO.OUT)
-		self.pwm_out = GPIO.PWM(self._pin_fancontrol,1)
-		self.pwm_out.start(0)
-		self.pwm_out.ChangeFrequency(self.pwm_freq)
-		self.pwm_out.ChangeDutyCycle(self.pwm_speed)
+        GPIO.setup(self._pin_fancontrol, GPIO.OUT)
+        self.pwm_out = GPIO.PWM(self._pin_fancontrol,1)
+        self.pwm_out.start(0)
+        self.pwm_out.ChangeFrequency(self.pwm_freq)
+        self.pwm_out.ChangeDutyCycle(self.pwm_speed)
 
         plasma.set_clear_on_exit(True)
         plasma.set_light_count(1)
@@ -157,7 +158,7 @@ class FanShim():
         last = 1
 
         while self._running:
-            current = GPIO.input(self._pin_button)
+            current = get_fan(self)
             # Transition from 1 to 0
             if last > current:
                 self._t_pressed = time.time()
