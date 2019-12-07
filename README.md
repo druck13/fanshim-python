@@ -30,7 +30,7 @@ Latest/development library from THE PIMORINI GitHub:
 
 ### My "Slower Speed Development" library from HERE using PWM to run fan slower:
 
-#### Install and run my version of automatic.py in a tmux session 
+#### Install and run automatic.py in a tmux session using my version of __init__.py
 * `cd /home/pi`
 * `git clone https://github.com/grayerbeard/fanshim-python.git`
 * `cd /home/pi/fanshim-python`
