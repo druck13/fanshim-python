@@ -23,7 +23,7 @@ class FanShim():
         self._button_hold_handler = None
         self._button_hold_time = 2.0
         self._t_poll = None
-        print("hullo sss")
+        
         
         
         # My added parameters
@@ -38,21 +38,33 @@ class FanShim():
         #GPIO.setwarnings(False)
         #GPIO.setmode(GPIO.BCM)
         #GPIO.setup(self._pin_fancontrol, GPIO.OUT)
-        # Still need this if want button to work !!
-        GPIO.setup(self._pin_button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        
         
         #My Version
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
+        # Still need this if want button to work !! BUT if I have this line get errors have not fixed yet
+        GPIO.setup(self._pin_button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         GPIO.setup(self._pin_fancontrol, GPIO.OUT)
         self.pwm_out = GPIO.PWM(self._pin_fancontrol,1)
         self.pwm_out.start(0)
         self.pwm_out.ChangeFrequency(self.pwm_freq)
         self.pwm_out.ChangeDutyCycle(self.pwm_speed)
 
+        self.__no_heading_yet = True
+
         plasma.set_clear_on_exit(True)
         plasma.set_light_count(1)
         plasma.set_light(0, 0, 0, 0)
+
+    def log_to_file(self,log_line):
+        if self.__no_heading_yet:
+            self.__no_heading_yet = False
+            self.__log_file = open("/home/pi/fanshim-python/log.csv",'w')
+            self.__log_file.write("Current Temp,Target Temp,CPU Freq,Automatic,Fan State \n")
+        self.__log_file.write(log_line)
+        self.__log_file.flush()
+        return
 
     def start_polling(self):
         """Start button polling."""
@@ -123,7 +135,7 @@ class FanShim():
         #My Version
         return self.set_fan(False if self.get_fan() else True)
 
-    def set_fan(self, fan_state):
+    def set_fan(self,status):
         """Set the fan on/off.
 
         :param fan_state: True/False for on/off
@@ -133,7 +145,7 @@ class FanShim():
         #GPIO.output(self._pin_fancontrol, True if fan_state else False)
         #return True if fan_state else False
         # My version
-        if fan_state:
+        if status:
             self.pwm_out.ChangeDutyCycle(self.pwm_on_speed)
             self.fan_state = True
         else:
@@ -159,7 +171,7 @@ class FanShim():
         last = 1
 
         while self._running:
-            current = get_fan(self)
+            current = self.get_fan()
             # Transition from 1 to 0
             if last > current:
                 self._t_pressed = time.time()

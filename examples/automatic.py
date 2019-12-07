@@ -71,10 +71,13 @@ def set_fan(status):
 
 
 def set_automatic(status):
-    global armed, last_change
-    armed = status
-    last_change = 0
-
+    #following had to be disabled as keeps resetting armed status
+    #global armed, last_change
+    #armed = status
+    #last_change = 0
+    #if args.verbose:
+    #    print("Armed set by set_automatic :",armed)
+    return
 
 if args.threshold > -1 or args.hysteresis > -1:
     print("""
@@ -94,7 +97,8 @@ enable = False
 is_fast = False
 last_change = 0
 signal.signal(signal.SIGTERM, clean_exit)
-
+file_started_flag = False
+file_log_every_few = 3
 
 t = get_cpu_temp()
 if t >= args.threshold:
@@ -133,14 +137,34 @@ try:
         is_fast = (int(f.current) == int(f.max))
         if args.verbose:
             print("Current: {:05.02f} Target: {:05.02f} Freq {: 5.02f} Automatic: {} On: {}".format(t, args.off_threshold, f.current / 1000.0, armed, enabled))
-
+            log_line = str(t) + "," + str(args.off_threshold) + "," + str(f.current / 1000.0) + "," + str(armed) + "," + str(enabled) + "\n"
+            if not(file_started_flag):
+                file_started_flag = True
+                log_file = open("/home/pi/fanshim-python/log.csv",'w')
+                log_file.write("Current Temp,Target Temp,CPU Freq,Automatic,Fan State \n")
+            if file_log_every_few >= 3:
+                log_file.write(log_line)
+                file_log_every_few = 0
+                log_file.flush()
+            else:
+                file_log_every_few += 1
         if args.preempt and is_fast and was_fast:
             enable = True
-        elif armed:
+        if args.verbose:
+            print("armed :",armed)
+        if armed:
+            if args.verbose:
+                print("check")
             if t >= args.on_threshold:
+                if args.verbose:
+                    print("on")
                 enable = True
+                armed = True
             elif t <= args.off_threshold:
+                if args.verbose:
+                    print("off")
                 enable = False
+                armed = True
 
         if set_fan(enable):
             last_change = t
