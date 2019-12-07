@@ -1,6 +1,8 @@
-# My attempts to modify to run Fan only as fast as needed
+# Pimorini Pyhon modified successfully to run Fan only as fast as needed using a fixed PWM speed 
 
-It does not make much difference how fast the fan is running as long as its putting enough colder air by the cpu it gets cooled about the same. (tests done using the  algorithm_test_cooling.py algoritmm in the pwm_fanshim branch of my [RPi4_Python_FanshimPWM_Temperature_Control_with_logging](https://github.com/grayerbeard/RPi4_Python_FanshimPWM_Temperature_Control_with_logging/tree/pwm_fanshim) repository. 70 to 75% speed is well fast enough and is much quieter.
+It does not make much difference how fast the fan is running as long as its putting enough colder air by the cpu it gets cooled about the same. (tests done using the  algorithm_test_cooling.py algoritmm in the pwm_fanshim branch of my [RPi4_Python_FanshimPWM_Temperature_Control_with_logging](https://github.com/grayerbeard/RPi4_Python_FanshimPWM_Temperature_Control_with_logging/tree/pwm_fanshim) repository. 70 to 75% speed is well fast enough and is much quieter.   
+
+Althouigh the cooling effect is arount 30 to 40% less its actually enough to cool the CPU when running a 100% load stress test down to around 62 C.
 
 ## December 6th 1200hrs
 (1) Modified __init__.py so that when command given to run fan it should run at 70% speed instead of 100%.   Extensive test have shown that the cooling effect is very similar at a slower speed and yet the fan is much quieter.  Then added a tmux_start.py command that can be usd to run in a tmux session.
