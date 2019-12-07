@@ -39,7 +39,7 @@ class FanShim():
         #GPIO.setmode(GPIO.BCM)
         #GPIO.setup(self._pin_fancontrol, GPIO.OUT)
         # Still need this if want button to work !!
-		GPIO.setup(self._pin_button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(self._pin_button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         
         #My Version
         GPIO.setwarnings(False)
