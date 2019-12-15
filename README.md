@@ -1,5 +1,8 @@
 # Pimorini Pyhon modified successfully to run Fan only as fast as needed using a fixed PWM speed 
 
+### Note 14 12 2019
+* Have used this on my R Pi 4 over a week now and works fine in either verbode mode or not in Verbose mode.
+
 ### Notes 07 12 2019: 
 * I ran into a problem related to the push button that kept turning off the auto mode, maybe because this code is not based on the latest pimorini version.  I think this may be 0.0.2 based and they are up to 0.0.3.  However the actual control of the fan is working fine I just had to remark out some code related to the push button.   I have no plans, at the moment, to investigate as this version is fine for my purposes.
 * I have added logging to a csv file when in verbose mode and a tmux start file for starting not in verbose mode.
@@ -10,8 +13,8 @@ It does not make much difference how fast the fan is running as long as its putt
 Although the cooling effect is arount 30 to 40% less its actually enough to cool the CPU when running a 100% load stress test down to around 62 C.
 
 ## December 6th 1200hrs
-(1) Modified __init__.py so that when command given to run fan it should run at 70% speed instead of 100%.   Extensive test have shown that the cooling effect is very similar at a slower speed and yet the fan is much quieter.  Then added a tmux_start.py command that can be usd to run in a tmux session.
-(2) Installed and tests completed December 6th 1420hrs. Ran 100% stress test and cooling OK with fan running at 70% speed instead of 100%.  Temperatures used; On at 65 off at 60.  Will later install logging to check long term behaviour.
+* (1) Modified __init__.py so that when command given to run fan it should run at 70% speed instead of 100%.   Extensive test have shown that the cooling effect is very similar at a slower speed and yet the fan is much quieter.  Then added a tmux_start.py command that can be usd to run in a tmux session.
+* (2) Installed and tests completed December 6th 1420hrs. Ran 100% stress test and cooling OK with fan running at 70% speed instead of 100%.  Temperatures used; On at 65 off at 60.  Will later install logging to check long term behaviour.
 
 
 # Fan Shim for Raspberry Pi
@@ -50,7 +53,7 @@ Latest/development library from THE PIMORINI GitHub:
 * To leave tmux seession use `ctrl-b` `d`
 
 
-# Reference for using commands in your own Python Program
+# Reference by Pimorini for using the original Pimorini code commands in your own Python Program
 
 You should first set up an instance of the `FANShim` class, eg:
 
