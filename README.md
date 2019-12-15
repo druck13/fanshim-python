@@ -1,4 +1,4 @@
-# Pimorini Pyhon modified successfully to run Fan only as fast as needed using a fixed PWM speed 
+# Pimorini Python modified successfully to run Fan only as fast as needed using a fixed PWM speed 
 
 ### Note 14 12 2019
 * Have used this on my R Pi 4 over a week now and works fine in either verbode mode or not in Verbose mode.
