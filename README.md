@@ -1,3 +1,22 @@
+# Pimorini Python modified successfully to run Fan only as fast as needed using a fixed PWM speed 
+
+### Note 14 12 2019
+* Have used this on my R Pi 4 over a week now and works fine in either verbode mode or not in Verbose mode.
+
+### Notes 07 12 2019: 
+* I ran into a problem related to the push button that kept turning off the auto mode, maybe because this code is not based on the latest pimorini version.  I think this may be 0.0.2 based and they are up to 0.0.3.  However the actual control of the fan is working fine I just had to remark out some code related to the push button.   I have no plans, at the moment, to investigate as this version is fine for my purposes.
+* I have added logging to a csv file when in verbose mode and a tmux start file for starting not in verbose mode.
+* I have fine tuned the parameters used in the tmux commands with respect to temperatures, reprate etc.
+
+It does not make much difference how fast the fan is running as long as its putting enough colder air by the cpu it gets cooled about the same. (tests done using the  algorithm_test_cooling.py algoritmm in the pwm_fanshim branch of my [RPi4_Python_FanshimPWM_Temperature_Control_with_logging](https://github.com/grayerbeard/RPi4_Python_FanshimPWM_Temperature_Control_with_logging/tree/pwm_fanshim) repository. 70 to 75% speed is well fast enough and is much quieter.   
+
+Although the cooling effect is arount 30 to 40% less its actually enough to cool the CPU when running a 100% load stress test down to around 62 C.
+
+## December 6th 1200hrs
+* (1) Modified __init__.py so that when command given to run fan it should run at 70% speed instead of 100%.   Extensive test have shown that the cooling effect is very similar at a slower speed and yet the fan is much quieter.  Then added a tmux_start.py command that can be usd to run in a tmux session.
+* (2) Installed and tests completed December 6th 1420hrs. Ran 100% stress test and cooling OK with fan running at 70% speed instead of 100%.  Temperatures used; On at 65 off at 60.  Will later install logging to check long term behaviour.
+
+
 # Fan Shim for Raspberry Pi
 
 [![Build Status](https://travis-ci.com/pimoroni/fanshim-python.svg?branch=master)](https://travis-ci.com/pimoroni/fanshim-python)
@@ -7,17 +26,34 @@
 
 # Installing
 
-Stable library from PyPi:
+Stable Pimorini version library from PyPi:
 
 * Just run `sudo pip install fanshim`
 
-Latest/development library from GitHub:
+Latest/development library from THE PIMORINI GitHub:
 
 * `git clone https://github.com/pimoroni/fanshim-python`
 * `cd fanshim-python`
 * `sudo ./install.sh`
 
-# Reference
+### My "Slower Speed Development" library from HERE using PWM to run fan slower:
+
+#### Install and run automatic.py in a tmux session using my version of __init__.py
+* `cd /home/pi`
+* `git clone https://github.com/grayerbeard/fanshim-python.git`
+* `cd /home/pi/fanshim-python`
+* `sudo ./install.sh`
+* `./tmux_start.sh`
+### Notes
+* If not installed install tmux with `sudo apt-get install tmux`
+* To start automatically put this into `rc.local` using `sudo nano /etc/rc.local` : `sudo -u pi bash /home/pi/fanshim-python/tmux_start.sh &`
+* To change parameters used edit `tmux_start.sh`.
+* To check if tmux session running OK use `tmux ls`
+* To observe program output use `tmux a -t fanshim_pwm`
+* To leave tmux seession use `ctrl-b` `d`
+
+
+# Reference by Pimorini for using the original Pimorini code commands in your own Python Program
 
 You should first set up an instance of the `FANShim` class, eg:
 
