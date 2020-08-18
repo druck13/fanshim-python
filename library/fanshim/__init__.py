@@ -1,17 +1,14 @@
 import RPi.GPIO as GPIO
 import time
-try:
-    from plasma import legacy as plasma
-except ImportError:
-    import plasma
+import apa102
 import atexit
 from threading import Thread
 
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 
 
 class FanShim():
-    def __init__(self, pin_fancontrol=18, pin_button=17, button_poll_delay=0.05):
+    def __init__(self, pin_fancontrol=18, pin_button=17, button_poll_delay=0.05, disable_button=False, disable_led=False):
         """FAN Shim.
 
         :param pin_fancontrol: BCM pin for fan on/off
@@ -27,19 +24,26 @@ class FanShim():
         self._button_hold_time = 2.0
         self._t_poll = None
 
-        atexit.register(self._cleanup)
+        self._disable_button = disable_button
+        self._disable_led = disable_led
 
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self._pin_fancontrol, GPIO.OUT)
-        GPIO.setup(self._pin_button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-        plasma.set_clear_on_exit(True)
-        plasma.set_light_count(1)
-        plasma.set_light(0, 0, 0, 0)
+        if not self._disable_button:
+            GPIO.setup(self._pin_button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+        if not self._disable_led:
+            self._led = apa102.APA102(1, 15, 14, None, brightness=0.05)
+
+        atexit.register(self._cleanup)
 
     def start_polling(self):
         """Start button polling."""
+        if self._disable_button:
+            return
+
         if self._t_poll is None:
             self._t_poll = Thread(target=self._run)
             self._t_poll.daemon = True
@@ -47,6 +51,9 @@ class FanShim():
 
     def stop_polling(self):
         """Stop button polling."""
+        if self._disable_button:
+            return
+
         if self._t_poll is not None:
             self._running = False
             self._t_poll.join()
@@ -109,7 +116,7 @@ class FanShim():
         GPIO.output(self._pin_fancontrol, True if fan_state else False)
         return True if fan_state else False
 
-    def set_light(self, r, g, b):
+    def set_light(self, r, g, b, brightness=None):
         """Set LED.
 
         :param r: Red (0-255)
@@ -117,11 +124,18 @@ class FanShim():
         :param b: Blue (0-255)
 
         """
-        plasma.set_light(0, r, g, b)
-        plasma.show()
+        if self._disable_led:
+            return
+
+        self._led.set_pixel(0, r, g, b)
+        if brightness is not None:
+            self._led.set_brightness(0, brightness)
+        self._led.show()
 
     def _cleanup(self):
         self.stop_polling()
+
+        self.set_light(0, 0, 0)
 
     def _run(self):
         self._running = True
